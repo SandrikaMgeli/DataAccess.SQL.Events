@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "S4Z9Vjg7rU0=",
+  "success": true,
+  "projectFilePath": "/home/sandro/Desktop/PersonalProjects/DataAccess.SQL.Events/DataAccess.SQL.Events.PostgreSql.Kafka/DataAccess.SQL.Events.PostgreSql.Kafka.csproj",
+  "expectedPackageFiles": [
+    "/home/sandro/.nuget/packages/sandrikamgeli.dataaccess.sql.abstraction/0.1.9/sandrikamgeli.dataaccess.sql.abstraction.0.1.9.nupkg.sha512"
+  ],
+  "logs": []
+}
