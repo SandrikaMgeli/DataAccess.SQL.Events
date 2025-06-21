@@ -1,0 +1,1 @@
+CREATE SCHEMA sandrika_mgeli_events;

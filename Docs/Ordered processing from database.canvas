@@ -1,0 +1,31 @@
+{
+	"nodes":[
+		{"id":"2868eb79b88cd635","type":"group","x":-680,"y":-1195,"width":1606,"height":1737,"label":"Logic"},
+		{"id":"d0be8bd85e8c61ce","type":"group","x":-2140,"y":-1077,"width":1325,"height":295,"color":"2","label":"Concerns"},
+		{"id":"e75ee26215d879d6","type":"group","x":1040,"y":-1060,"width":1124,"height":258,"color":"3","label":"Q&A"},
+		{"id":"e02f612f3027e1a9","type":"text","text":"Update database and set UNDER_PROCESSING status to all of the events with these keys, mentioned above","x":-475,"y":-580,"width":447,"height":120},
+		{"id":"5d7b310279d189e6","type":"text","text":"Release distributed lock X","x":-60,"y":-340,"width":250,"height":60},
+		{"id":"08ce72d21f0e79fb","type":"text","text":"Take distinct event keys","x":-377,"y":-760,"width":250,"height":80},
+		{"id":"063631aa518a751f","type":"text","text":"If processing fails, then take this event and just mark as FAILED, totally different job will take these failed events and do retry for them. after successfully processing, event, they will mark this event as processed and all the events with same key as PENDING again\n\n==IMPLEMENT RETRY COUNTER LOGIC FOR THIS SCENARIO==","x":220,"y":313,"width":686,"height":196},
+		{"id":"66d6fa5865e81d10","type":"text","text":"After processing successfully, mark processed event as Successfull and all the other events with same key, as PENDING\n==It will be trigger, for other instances to take these events from table and process them.==","x":-660,"y":313,"width":562,"height":209},
+		{"id":"1d2625a386e8e1c1","type":"text","text":"Comments:","x":-1360,"y":-1057,"width":525,"height":255},
+		{"id":"d92a7a87a50fed33","type":"text","text":"Fetch top 100 events where status is PENDING and ordered by id. \n==**[id is sortable in relation to time. It will be like snowflake id, or GUID version 7]**==","x":-596,"y":-1000,"width":688,"height":140},
+		{"id":"6f15ee82f6dd93f6","type":"text","text":"If we will be able to somehow solve problem with initial locking mechanism through partitioning or something like that, then it will be scaled very well and only bottleneck will be database power and not our logic because everything will be parallelly processable","x":-2120,"y":-1015,"width":603,"height":170},
+		{"id":"92ef86bbca3fc122","type":"text","text":"There will be separated job that will take these type of events and check if specific time is elapsed, then it will mark them as pending again","x":1600,"y":-1040,"width":544,"height":132},
+		{"id":"55278b1e9fc041b8","type":"text","text":"What if processing fails and I won't be able to mark this event as pending?","x":1060,"y":-1023,"width":408,"height":99},
+		{"id":"cb49c4fdea5066e1","type":"text","text":"Take distributed lock X","x":-33,"y":-1175,"width":250,"height":60},
+		{"id":"9d99d8ce47e68f82","type":"text","text":"Start processing, respectively selected event key's order under each partition.","x":-115,"y":-80,"width":360,"height":128}
+	],
+	"edges":[
+		{"id":"15d950c7a058acba","fromNode":"cb49c4fdea5066e1","fromSide":"bottom","toNode":"d92a7a87a50fed33","toSide":"top"},
+		{"id":"4b879dcb7c2466f1","fromNode":"d92a7a87a50fed33","fromSide":"bottom","toNode":"08ce72d21f0e79fb","toSide":"top"},
+		{"id":"54d327a219347012","fromNode":"08ce72d21f0e79fb","fromSide":"bottom","toNode":"e02f612f3027e1a9","toSide":"top"},
+		{"id":"ecefcbbeb077a4a0","fromNode":"e02f612f3027e1a9","fromSide":"bottom","toNode":"5d7b310279d189e6","toSide":"top"},
+		{"id":"f515cb592a949854","fromNode":"5d7b310279d189e6","fromSide":"bottom","toNode":"9d99d8ce47e68f82","toSide":"top","label":"Continue processing selected batch in parallel"},
+		{"id":"08024b7d49fb0333","fromNode":"5d7b310279d189e6","fromSide":"right","toNode":"cb49c4fdea5066e1","toSide":"right","label":"Go to the next loop in parallel. it maybe other instance, that will take advisory lock X"},
+		{"id":"d9c0e4a2ab06bf2d","fromNode":"9d99d8ce47e68f82","fromSide":"bottom","toNode":"66d6fa5865e81d10","toSide":"top","label":"SUCCESSFULLY PROCESSED"},
+		{"id":"f01bc970930da588","fromNode":"9d99d8ce47e68f82","fromSide":"bottom","toNode":"063631aa518a751f","toSide":"top","label":"FAILED"},
+		{"id":"78e6c58c9e7e7d0d","fromNode":"55278b1e9fc041b8","fromSide":"right","toNode":"92ef86bbca3fc122","toSide":"left"},
+		{"id":"27d45e7648eef674","fromNode":"6f15ee82f6dd93f6","fromSide":"right","toNode":"1d2625a386e8e1c1","toSide":"left"}
+	]
+}

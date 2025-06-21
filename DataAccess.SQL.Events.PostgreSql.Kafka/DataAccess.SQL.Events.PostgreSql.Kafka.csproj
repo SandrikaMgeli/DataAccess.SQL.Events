@@ -11,7 +11,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SandrikaMgeli.DataAccess.SQL.Abstraction" Version="0.1.9" />
+      <None Update="Migrations\migration_EventsTableCreation.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Migrations\migration_1_EventsSchemaCreation.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Migrations\migration_2_EventsTableCreation.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
