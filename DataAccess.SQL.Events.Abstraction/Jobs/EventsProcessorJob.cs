@@ -1,10 +1,12 @@
+using DataAccess.SQL.Abstraction;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.SQL.Events.Abstraction;
 
 public class EventsProcessorJob(
-    ILogger<EventsProcessorJob> logger)
+    ILogger<EventsProcessorJob> logger,
+    IDbManager dbManager)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
