@@ -1,30 +1,20 @@
-using DataAccess.SQL.Abstraction;
-using Microsoft.Extensions.Hosting;
+using DataAccess.SQL.Events.Abstraction.Jobs.Base;
+using DataAccess.SQL.Events.Abstraction.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace DataAccess.SQL.Events.Abstraction;
+namespace DataAccess.SQL.Events.Abstraction.Jobs;
 
 public class EventsProcessorJob(
     ILogger<EventsProcessorJob> logger,
-    IDbManager dbManager)
-    : BackgroundService
+    IServiceScopeFactory serviceScopeFactory)
+    : Job(logger, TimeSpan.FromMinutes(1))
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task InvokeAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            try
-            {
+        using IServiceScope scope = serviceScopeFactory.CreateScope();
 
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, e.Message);
-            }
-            finally
-            {
-                await Task.Delay(1000, CancellationToken.None);
-            }
-        }
+        IEventsProcessorService eventsProcessor = scope.ServiceProvider.GetRequiredService<IEventsProcessorService>();
+        await eventsProcessor.ProcessEvents(stoppingToken);
     }
 }

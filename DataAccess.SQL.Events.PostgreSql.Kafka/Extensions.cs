@@ -1,4 +1,7 @@
 using DataAccess.SQL.Abstraction;
+using DataAccess.SQL.Events.Abstraction.Repositories;
+using DataAccess.SQL.Events.PostgreSql.Kafka.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess.SQL.Events.PostgreSql.Kafka;
 
@@ -16,6 +19,7 @@ public static class Extensions
     /// </summary>
     public static DbOptions AddPostgreSqlKafka(this DbOptions options)
     {
+        options.Services.AddScoped<IEventsRepository, EventsRepository>();
         return options;
     }
 }
